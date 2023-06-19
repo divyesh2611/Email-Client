@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  localhost:
+    image: cockroachdb/cockroach:v22.2.6
+    command: cockroach start --insecure --store=node1 --listen-addr=localhost:26257 --http-addr=localhost:8080 --join=localhost:26257,localhost:26258,localhost:26259 --background
+    ports:
+      - 8080:8080
+      - 2625:26257
+    volumes:
+      - cockroach-data:/cockroach/cockroach-data
+
+  app:
+    build: .
+    ports:
+      - 3000:3000
+    depends_on:
+      - localhost
+  hadlers : 
+   image: email-handlers 
+
+
+volumes:
+  cockroach-data:
+
+
